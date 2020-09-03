@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="14.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="Trampoline.Student1">
+    <void property="name">
+     <string>Parag</string>
+    </void>
+    <void property="roll">
+     <int>1</int>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Trampoline.Student1">
+    <void property="name">
+     <string>raj</string>
+    </void>
+    <void property="roll">
+     <int>2</int>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
