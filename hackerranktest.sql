@@ -61,7 +61,13 @@ count(distinct e.Senior_Manager_Code), count(distinct e.Manager_Code),
 count(distinct e.employee_Code) FROM Company c 
 JOIN Employee e ON c.Company_Code = e.Company_Code GROUP BY c.Company_Code, c.Founder ORDER BY c.COMpany_Code;
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
- 
+ SELECT N, CASE
+            WHEN P IS NULL THEN 'Root'
+            WHEN (SELECT COUNT(*) FROM BST child WHERE child.P = father.N) > 0 THEN 'Inner'
+            ELSE 'Leaf'
+          END
+FROM BST father
+ORDER BY N;
  
  
  
