@@ -68,9 +68,62 @@ JOIN Employee e ON c.Company_Code = e.Company_Code GROUP BY c.Company_Code, c.Fo
           END
 FROM BST father
 ORDER BY N;
- 
- 
- 
+ -------------------------------------------------------------------------------------------------------------------------------------------------------------
+        select 
+  contests.contest_id, 
+  contests.hacker_id, 
+  contests.name,
+  sum(submissions_sums.sum_submissions),
+  sum(submissions_sums.sum_accepted_submissions),
+  sum(views_sums.sum_views),
+  sum(views_sums.sum_unique_views)
+from contests 
+join colleges on contests.contest_id = colleges.contest_id
+join challenges on colleges.college_id = challenges.college_id
+
+
+left join 
+(select 
+  challenge_id,
+  sum(total_submissions) as sum_submissions,
+  sum(total_accepted_submissions) as sum_accepted_submissions
+  from submission_stats group by challenge_id) 
+as submissions_sums
+on challenges.challenge_id = submissions_sums.challenge_id
+
+
+left join
+(select 
+  challenge_id,
+  sum(total_views) as sum_views,
+  sum(total_unique_views) as sum_unique_views
+  from view_stats group by challenge_id) 
+as views_sums
+on challenges.challenge_id = views_sums.challenge_id
+
+group by contests.contest_id, contests.hacker_id, contests.name
+
+having (
+  sum(submissions_sums.sum_submissions) +
+  sum(submissions_sums.sum_accepted_submissions) +
+  sum(views_sums.sum_views) +
+  sum(views_sums.sum_unique_views)
+) > 0
+order by contests.contest_id;
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ SELECT SUBMISSION_DATE,
+(SELECT COUNT(DISTINCT HACKER_ID)  
+ FROM SUBMISSIONS S2  
+ WHERE S2.SUBMISSION_DATE = S1.SUBMISSION_DATE AND    
+(SELECT COUNT(DISTINCT S3.SUBMISSION_DATE) 
+ FROM SUBMISSIONS S3 WHERE S3.HACKER_ID = S2.HACKER_ID AND S3.SUBMISSION_DATE < S1.SUBMISSION_DATE) = DATEDIFF(S1.SUBMISSION_DATE , '2016-03-01')),
+(SELECT HACKER_ID FROM SUBMISSIONS S2 WHERE S2.SUBMISSION_DATE = S1.SUBMISSION_DATE 
+GROUP BY HACKER_ID ORDER BY COUNT(SUBMISSION_ID) DESC, HACKER_ID LIMIT 1) AS TMP,
+(SELECT NAME FROM HACKERS WHERE HACKER_ID = TMP)
+FROM
+(SELECT DISTINCT SUBMISSION_DATE FROM SUBMISSIONS) S1
+GROUP BY SUBMISSION_DATE;
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
  
     
     
